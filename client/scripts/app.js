@@ -62,7 +62,7 @@ $( document ).ready(function() {
       var escapedName = _.escape(object.username);
       escapedName = escapedName.replace(/%20/g, ' ');
       var escapedMessage = _.escape(object.text);
-      $('#chats').append('<div>@ <span class= "user ' + escapedName + '"> ' + escapedName + '</span>: ' + escapedMessage + '</div></br>');
+      $('#chats').append('<div>@<span class= "user ' + escapedName + '"> ' + escapedName + '</span>: ' + escapedMessage + '</div></br>');
       if (friends[escapedName]) {
         $('.' + escapedName).addClass('friend');
       }
@@ -118,6 +118,7 @@ $( document ).ready(function() {
   }, 1000);
 
   $('select').on('change', function() {
+
     clearInterval(interval);
     app.clearMessages();
     var room = $('select').val();
@@ -146,7 +147,6 @@ $( document ).ready(function() {
 
 
 //list:
-// - Implement friend users and bold friend users
 // - Design? Make it pretty
 // - When you click on a username, get all the messages from that specific user
 // - To be continued..
