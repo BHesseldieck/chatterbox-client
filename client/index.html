@@ -28,15 +28,18 @@
       <h1>chatterbox</h1>
       <label>Choose a room:</label>
       <select id="roomSelect">
-        <option value='lobby'>Lobby</option>
+ <!--        <option value='lobby'>Lobby</option>
         <option value='hackers'>Hackers</option>
-        <option value='trolls'>Trolls</option>
+        <option value='trolls'>Trolls</option> -->
       </select>
       <form class='message-content'>
         <input type="text" name="message" placeholder="Your message here." class = "message"><br><br>
         <input class ="submitButton" type="submit" value="Submit">
       </form>
-      <button class="clear">Clear Chats</button>
+      <form class='room-content'>
+        <input type="text" name="room" placeholder="New room name here." class= "newRoom"><br>
+        <br>
+        <input class="createRoom" type="submit">
       <!-- Your HTML goes here! -->
     </div>
     <div id="chats"></div>

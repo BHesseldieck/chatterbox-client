@@ -38,6 +38,12 @@ $( document ).ready(function() {
           var messages = data.results;
 
           messages.forEach(function(elementObj, i, messages) {
+            var room = elementObj.roomname;
+            if (room !== '' && room !== undefined && !(rooms[room])) {
+              rooms[room] = room;
+              app.renderRoom(room);
+            }
+
             cb(elementObj);
           });
 
@@ -54,12 +60,14 @@ $( document ).ready(function() {
 
     renderMessage: function(object) { 
       var escapedName = _.escape(object.username);
+      escapedName = escapedName.replace(/%20/g, ' ');
       var escapedMessage = _.escape(object.text);
       $('#chats').append('<div>' + escapedName + ': ' + escapedMessage + '</div></br>');
     },
 
-    renderRoom: function(object) {
-      var escapedRoom = _.escape(object.roomname);
+    renderRoom: function(roomName) {
+      var escapedRoom = _.escape(roomName);
+      console.log(escapedRoom);
       $('#roomSelect').append('<option value=' + escapedRoom + '>' + escapedRoom + '</option>');
     },
     handleUsernameClick: function(object) {
@@ -71,6 +79,8 @@ $( document ).ready(function() {
     }
   };
 
+  var rooms = {};
+
   app.init();
 
   $('.submitButton').on('click', function(event) {
@@ -81,8 +91,14 @@ $( document ).ready(function() {
     console.log('I was pressed');
   });
 
-
-  $('button').click('.clear', app.clearMessages);
+  $('.createRoom').on('click', function(event) {
+    event.preventDefault();
+    var roomName = $('.newRoom').val().replace(/ /g, '');
+    console.log(roomName);
+    rooms[roomName] = roomName;
+    app.renderRoom(roomName);
+    $('.newRoom').val('');
+  });
 
   var interval;
 
@@ -92,15 +108,20 @@ $( document ).ready(function() {
 
   $('select').on('change', function() {
     clearInterval(interval);
-    $('#chats').html('');
+    app.clearMessages();
     var room = $('select').val();
-    alert(room);
 
     if (room === 'lobby') {
+      app.fetch(app.server);
       interval = setInterval(function() {
         app.fetch(app.server);
       }, 1000);
     } else {
+      app.fetch(app.server, function(obj) {
+        if (obj.roomname === room) {
+          app.renderMessage(obj);
+        }
+      });
       interval = setInterval(function() {
         app.fetch(app.server, function(obj) {
           if (obj.roomname === room) {
