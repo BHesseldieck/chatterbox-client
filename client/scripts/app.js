@@ -62,7 +62,10 @@ $( document ).ready(function() {
       var escapedName = _.escape(object.username);
       escapedName = escapedName.replace(/%20/g, ' ');
       var escapedMessage = _.escape(object.text);
-      $('#chats').append('<div>' + escapedName + ': ' + escapedMessage + '</div></br>');
+      $('#chats').append('<div>@ <span class= "user ' + escapedName + '"> ' + escapedName + '</span>: ' + escapedMessage + '</div></br>');
+      if (friends[escapedName]) {
+        $('.' + escapedName).addClass('friend');
+      }
     },
 
     renderRoom: function(roomName) {
@@ -80,6 +83,7 @@ $( document ).ready(function() {
   };
 
   var rooms = {};
+  var friends = {};
 
   app.init();
 
@@ -98,6 +102,13 @@ $( document ).ready(function() {
     rooms[roomName] = roomName;
     app.renderRoom(roomName);
     $('.newRoom').val('');
+  });
+
+  $('#chats').on('click', 'span', function() {
+    var userName = $(this).attr('class').split(' ')[1].toString();
+    if (!friends[userName]) {
+      friends[userName] = userName;
+    }
   });
 
   var interval;
@@ -135,12 +146,11 @@ $( document ).ready(function() {
 
 
 //list:
-// - Add new chat rooms
 // - Implement friend users and bold friend users
 // - Design? Make it pretty
 // - When you click on a username, get all the messages from that specific user
 // - To be continued..
-
+// - fix that just one room exists not depending on Capitalization
 
 
 
