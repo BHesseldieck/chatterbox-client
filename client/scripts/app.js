@@ -2,13 +2,15 @@
 //url : https://api.parse.com/1/classes/messages
 $( document ).ready(function() {
   window.app = {
+    server: 'https://api.parse.com/1/classes/messages',
+
     init: function() {
-      app.fetch('https://api.parse.com/1/classes/messages');
+      app.fetch(app.server);
     },
 
     send: function(message) {
       $.ajax({
-        url: 'https://api.parse.com/1/classes/messages',
+        url: app.server,
         type: 'POST',
         data: JSON.stringify(message),
         contentType: 'application/json',
@@ -22,17 +24,21 @@ $( document ).ready(function() {
       });
     },
 
-    fetch: function(url) {
+    fetch: function(url, cb) {
+      cb = cb || app.renderMessage;
+
       $.ajax({
         url: url,
         type: 'GET',
         contentType: 'application/json',
+        data: {'order': '-createdAt'},
         success: function(data) {
+          console.log(data);
           app.clearMessages();
           var messages = data.results;
 
           messages.forEach(function(elementObj, i, messages) {
-            app.renderMessage(elementObj);
+            cb(elementObj);
           });
 
         },
@@ -49,7 +55,7 @@ $( document ).ready(function() {
     renderMessage: function(object) { 
       var escapedName = _.escape(object.username);
       var escapedMessage = _.escape(object.text);
-      $('#chats').prepend('<div>' + escapedName + ': ' + escapedMessage + '</div></br>');
+      $('#chats').append('<div>' + escapedName + ': ' + escapedMessage + '</div></br>');
     },
 
     renderRoom: function(object) {
@@ -65,22 +71,56 @@ $( document ).ready(function() {
     }
   };
 
-  // $('.submitButton').on('click', function(event) {
-  //   event.preventDefault();
-  //   console.log('I was pressed');
-  // });
-
   app.init();
+
+  $('.submitButton').on('click', function(event) {
+    event.preventDefault();
+    var userName = window.location.search.split('=')[1];
+    app.send({username: userName, text: $('.message').val(), roomname: $('select').val()});
+    $('.message').val('');
+    console.log('I was pressed');
+  });
+
 
   $('button').click('.clear', app.clearMessages);
 
-  setInterval(function() {
-    app.fetch('https://api.parse.com/1/classes/messages');
+  // var intervalChange = function (intervalFunc, ...args) {
+  //   if (intervalFunc === undefined) {
+  //     intervalFunc = app.fetch;
+  //     args = [app.server];
+  //   }
+  //   setInterval(function() {
+  //     intervalFunc.apply(window, args);
+  //   }, 1000);
+  // };
+  // intervalChange();
+
+  var interval;
+
+  interval = setInterval(function() {
+    app.fetch(app.server);
   }, 1000);
 
-  app.send({text: "$('body').html('HAHA PWND BY SAM AND GUY')"});
+  $('select').on('change', function() {
+    clearInterval(interval);
+    $('#chats').html('');
+    var room = $('select').val();
+    alert(room);
 
-
+    if (room === 'lobby') {
+      interval = setInterval(function() {
+        app.fetch(app.server);
+      }, 1000);
+    } else {
+      interval = setInterval(function() {
+        app.fetch(app.server, function(obj) {
+          if (obj.roomname === room) {
+            app.renderMessage(obj);
+          }
+        });
+      }, 1000);
+    }
+  });
 });
 
 
