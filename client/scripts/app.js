@@ -84,17 +84,6 @@ $( document ).ready(function() {
 
   $('button').click('.clear', app.clearMessages);
 
-  // var intervalChange = function (intervalFunc, ...args) {
-  //   if (intervalFunc === undefined) {
-  //     intervalFunc = app.fetch;
-  //     args = [app.server];
-  //   }
-  //   setInterval(function() {
-  //     intervalFunc.apply(window, args);
-  //   }, 1000);
-  // };
-  // intervalChange();
-
   var interval;
 
   interval = setInterval(function() {
@@ -123,6 +112,13 @@ $( document ).ready(function() {
   });
 });
 
+
+//list:
+// - Add new chat rooms
+// - Implement friend users and bold friend users
+// - Design? Make it pretty
+// - When you click on a username, get all the messages from that specific user
+// - To be continued..
 
 
 
