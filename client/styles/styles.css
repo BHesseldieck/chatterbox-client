@@ -14,12 +14,12 @@ body {
     background: rgba(255,255,255,0.90);
     padding: 30px 60px;
     border: solid #ddd;
-    border-width: 0 1px 1px 1px;
-    
+    border-width: 0 1px 1px 1px;    
 }
 
 #main {
     text-align: center;
+    margin-top: 150px;
 }
 
 #main h1 {
@@ -101,6 +101,7 @@ form input[type=text] {
     padding: 10px;
     border: 10px;
     border-radius: 10px;
+    font-size: 14px;
 }
 
 #roomSelect {
@@ -112,14 +113,11 @@ form input[type=text] {
 }
 
 .scrollable {
-    height: 540px;
+    height: 300px;
     border-radius: 0% 0% 2.5% 2.5%;
     overflow-y: auto;
 }
 
-#chats:not(div) {
-    opacity: 0.93;
-}
 
 input {
     border: solid #bddfeb 2px;
