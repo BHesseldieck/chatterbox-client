@@ -1,18 +1,24 @@
 body {
-    background: #eee;
+    background: url(https://newevolutiondesigns.com/images/freebies/city-wallpaper-47.jpg);
     text-align: center;
     padding: 0 25px;
     font-family: arial, sans-serif;
+    position: relative;
 }
 
-#main, #chats {
-    width: 500px;
+.styling {
+    border-radius: 2.5% 2.5% 0% 0%;
+    width: 650px;
     margin: auto;
     text-align: left;
     background: white;
-    padding: 50px 60px;
+    padding: 30px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
+}
+
+#main {
+    text-align: center;
 }
 
 #main h1 {
@@ -50,7 +56,6 @@ body {
 form {
     padding: 20px;
     padding-left: 0;
-    margin-bottom: 20px;
 }
 
 form input[type=text] {
@@ -86,8 +91,23 @@ form input[type=text] {
 
 .friend {
     color: #fff;
-    background-color: #0090da;
     font-size: 15px;
     font-weight: bold;
 }
 
+#chats div {
+    background: lightgrey;
+    padding: 10px;
+    border: 10px;
+    border-radius: 10px;
+}
+
+#roomSelect {
+    width: 100px;
+}
+
+.scrollable {
+    height: 585px;
+    border-radius: 0% 0% 2.5% 2.5%;
+    overflow-y: auto;
+}
