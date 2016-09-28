@@ -93,6 +93,7 @@ $( document ).ready(function() {
     var userName = window.location.search.split('=')[1];
     app.send({username: userName, text: $('.message').val(), roomname: $('select').val()});
     $('.message').val('');
+    $('input').blur();
     console.log('I was pressed');
   });
 
@@ -102,6 +103,7 @@ $( document ).ready(function() {
     rooms[roomName] = roomName;
     app.renderRoom(roomName);
     $('.newRoom').val('');
+    $('input').blur();
   });
 
   $('#chats').on('click', 'span', function() {
@@ -131,7 +133,6 @@ $( document ).ready(function() {
 
 
 //list:
-// - Design? Make it pretty
 // - When you click on a username, get all the messages from that specific user
 // - To be continued..
 // - fix that just one room exists not depending on Capitalization
