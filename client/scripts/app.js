@@ -24,14 +24,15 @@ $( document ).ready(function() {
       });
     },
 
-    fetch: function(url, cb) {
+    fetch: function(url, cb, room) {
       cb = cb || app.renderMessage;
+      var dataFormat = {limit: 50, 'order': '-createdAt', where: {roomname: room}} || {limit: 50, 'order': '-createdAt'};
 
       $.ajax({
         url: url,
         type: 'GET',
         contentType: 'application/json',
-        data: {'order': '-createdAt'},
+        data: dataFormat,
         success: function(data) {
           console.log(data);
           app.clearMessages();
@@ -46,6 +47,7 @@ $( document ).ready(function() {
 
             cb(elementObj);
           });
+
 
         },
         error: function(errorMessage) {
@@ -70,7 +72,6 @@ $( document ).ready(function() {
 
     renderRoom: function(roomName) {
       var escapedRoom = _.escape(roomName);
-      console.log(escapedRoom);
       $('#roomSelect').append('<option value=' + escapedRoom + '>' + escapedRoom + '</option>');
     },
     handleUsernameClick: function(object) {
@@ -98,7 +99,6 @@ $( document ).ready(function() {
   $('.createRoom').on('click', function(event) {
     event.preventDefault();
     var roomName = $('.newRoom').val().replace(/ /g, '');
-    console.log(roomName);
     rooms[roomName] = roomName;
     app.renderRoom(roomName);
     $('.newRoom').val('');
@@ -122,26 +122,10 @@ $( document ).ready(function() {
     clearInterval(interval);
     app.clearMessages();
     var room = $('select').val();
-
-    if (room === 'lobby') {
-      app.fetch(app.server);
-      interval = setInterval(function() {
-        app.fetch(app.server);
-      }, 1000);
-    } else {
-      app.fetch(app.server, function(obj) {
-        if (obj.roomname === room) {
-          app.renderMessage(obj);
-        }
-      });
-      interval = setInterval(function() {
-        app.fetch(app.server, function(obj) {
-          if (obj.roomname === room) {
-            app.renderMessage(obj);
-          }
-        });
-      }, 1000);
-    }
+    app.fetch(app.server, app.renderMessage, room);
+    interval = setInterval(function() {
+      app.fetch(app.server, app.renderMessage, room); 
+    }, 1000);
   });
 });
 

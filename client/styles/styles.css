@@ -11,10 +11,11 @@ body {
     width: 650px;
     margin: auto;
     text-align: left;
-    background: white;
+    background: rgba(255,255,255,0.90);
     padding: 30px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
+    
 }
 
 #main {
@@ -106,8 +107,22 @@ form input[type=text] {
     width: 100px;
 }
 
+.roombox {
+    font-size: 50px;
+}
+
 .scrollable {
     height: 585px;
     border-radius: 0% 0% 2.5% 2.5%;
     overflow-y: auto;
 }
+
+#chats:not(div) {
+    opacity: 0.93;
+}
+
+input {
+    border: solid #bddfeb 2px;
+    padding: 8px 25px;
+}
+
